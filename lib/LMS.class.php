@@ -1069,7 +1069,130 @@ class LMS
 		$saldolist['customerid'] = $id;
 		return $saldolist;
 	}
+	
+	// Dodanie obsługi salda per usługa
+	function GetCustomerBalanceByGroup($id)
+	{
+		return $this->DB->GetAll('SELECT SUM( value ) as balance, `numberplansgroups`.`description` AS grupa
+				FROM cash
+				LEFT JOIN documents ON documents.id = docid
+				LEFT JOIN `numberplansgroupsassignments` ON `documents`.`numberplanid` = `numberplansgroupsassignments`.`numberplanid`
+				LEFT JOIN `numberplansgroups` ON `numberplansgroups`.`id` = `numberplansgroupsassignments`.`groupid`
+				WHERE cash.customerid = ?
+				GROUP BY `numberplansgroupsassignments`.`groupid`
+				ORDER BY `numberplansgroupsassignments`.`groupid`'
+				, array($id));
+	}
 
+	function GetCustomerBalanceListByGroup($id, $group=NULL, $totime=NULL, $direction='ASC')
+	{
+		($direction == 'ASC' || $direction == 'asc') ? $direction == 'ASC' : $direction == 'DESC';
+		
+		$saldolist = array();
+		
+		if($tslist = $this->DB->GetAll('SELECT cash.id AS id, time, cash.type AS type,
+				cash.value AS value, taxes.label AS tax, cash.customerid AS customerid,
+				comment, docid, users.name AS username,
+				documents.type AS doctype, documents.closed AS closed
+				FROM cash
+				LEFT JOIN users ON users.id = cash.userid
+				LEFT JOIN documents ON documents.id = docid
+				LEFT JOIN taxes ON cash.taxid = taxes.id
+				LEFT JOIN `numberplansgroupsassignments` ON `documents`.`numberplanid` = `numberplansgroupsassignments`.`numberplanid`
+				LEFT JOIN `numberplansgroups` ON `numberplansgroups`.`id` = `numberplansgroupsassignments`.`groupid`
+				WHERE cash.customerid=? '
+				.($group ? ' AND `numberplansgroups`.`id`  = '.$group: '')
+				.($totime ? ' AND time <= '.$totime : '')
+				.' ORDER BY time ' . $direction, array($id)))
+		{
+			$saldolist['balance'] = 0;
+			$saldolist['total'] = 0;
+			$i = 0;
+			
+			foreach($tslist as $row)
+			{
+				// old format wrapper
+				foreach($row as $column => $value)
+					$saldolist[$column][$i] = $value;
+				
+				$saldolist['after'][$i] = round($saldolist['balance'] + $row['value'], 2);
+				$saldolist['balance'] += $row['value'];
+				$saldolist['date'][$i] = date('Y/m/d H:i', $row['time']);
+				
+				$i++;
+			}
+			$saldolist['total'] = sizeof($tslist);
+		}
+		$saldolist['customerid'] = $id;
+		
+		return $saldolist;
+	}
+	
+	function GetCustomerBalanceListUser($id, $totime=NULL, $direction='ASC')
+	{
+		($direction == 'ASC' || $direction == 'asc') ? $direction == 'ASC' : $direction == 'DESC';
+		
+		$saldolist = array();
+		
+		if($tslist = $this->DB->GetAll('SELECT cash.id AS id, time, cash.type AS type,
+				cash.value AS value, taxes.label AS tax, cash.customerid AS customerid,
+				comment, docid, users.name AS username,
+				documents.type AS doctype, documents.closed AS closed
+				FROM cash
+				LEFT JOIN users ON users.id = cash.userid
+				LEFT JOIN documents ON documents.id = docid
+				LEFT JOIN taxes ON cash.taxid = taxes.id
+				LEFT JOIN `numberplansgroupsassignments` ON `documents`.`numberplanid` = `numberplansgroupsassignments`.`numberplanid`
+				LEFT JOIN `numberplansgroups` ON `numberplansgroups`.`id` = `numberplansgroupsassignments`.`groupid`
+				WHERE cash.customerid=? AND (
+					(`documents`.`numberplanid` !=7
+					AND `documents`.`numberplanid` !=15
+					AND `documents`.`numberplanid` !=16
+					AND `documents`.`numberplanid` !=17
+					AND `documents`.`numberplanid` !=18
+					AND `documents`.`numberplanid` !=19
+					AND `documents`.`numberplanid` !=20
+					AND `documents`.`numberplanid` !=21
+					AND `documents`.`numberplanid` !=22
+					AND `documents`.`numberplanid` !=23
+					AND `documents`.`numberplanid` !=24
+					AND `documents`.`numberplanid` !=26
+					AND `documents`.`numberplanid` !=27
+					AND `documents`.`numberplanid` !=28
+					AND `documents`.`numberplanid` !=29
+					AND `documents`.`numberplanid` !=30
+					AND `documents`.`numberplanid` !=31
+					AND `documents`.`numberplanid` !=32
+					AND `documents`.`numberplanid` !=33
+					AND `documents`.`numberplanid` !=34
+					AND `documents`.`numberplanid` !=35
+					) OR docid =0
+				)'
+				.($totime ? ' AND time <= '.$totime : '')
+				.' ORDER BY time ' . $direction, array($id)))
+		{
+			$saldolist['balance'] = 0;
+			$saldolist['total'] = 0;
+			$i = 0;
+			
+			foreach($tslist as $row)
+			{
+				// old format wrapper
+				foreach($row as $column => $value)
+					$saldolist[$column][$i] = $value;
+				
+				$saldolist['after'][$i] = round($saldolist['balance'] + $row['value'], 2);
+				$saldolist['balance'] += $row['value'];
+				$saldolist['date'][$i] = date('Y/m/d H:i', $row['time']);
+				
+				$i++;
+			}
+			$saldolist['total'] = sizeof($tslist);
+		}
+		$saldolist['customerid'] = $id;
+		return $saldolist;
+	}
+	
 	function CustomerStats()
 	{
 		$result = $this->DB->GetRow('SELECT COUNT(id) AS total,
