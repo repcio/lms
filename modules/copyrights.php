@@ -121,6 +121,11 @@ $others = array(
 			'realname' => 'Piotr Mierzeński',
 			'info' => 'Logo project',
 			),
+		'Repcio' => array(
+				'realname' => 'Przemysław Gubernat',
+				'info' => 'PHP, Perl',
+				'www' => 'www.api.net.pl',
+			),
 		);
 				
 $SMARTY->assign('authors', $authors);
