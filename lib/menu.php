@@ -662,6 +662,12 @@ $menu = array(
 					'prio' => 30,
 				),
 				array(
+					'name' => trans('Numbering Plans Grouping'),
+					'link' => '?m=numberplangrouplist',
+					'tip' => trans('Numbering Plans Group Definitions'),
+					'prio' => 35,
+				),
+				array(
 					'name' => trans('States'),
 					'link' => '?m=statelist',
 					'tip' => trans('Country States Definitions'),

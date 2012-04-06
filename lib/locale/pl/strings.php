@@ -2581,4 +2581,11 @@ $_LANG['Connect to device'] = 'Podłączenie do urządzenia';
 $_LANG['Previous operation has not been finished yet!'] = 'Poprzednia czynność nie została jeszcze zakończona!';
 $_LANG['You haven\\\'t selected any nodes!'] = 'Nie wybrałeś żadnego komputera!';
 
+// Repcio, TVK
+$_LANG['Numbering Plans Grouping'] = 'Grupy usług';
+$_LANG['Numbering Plans Group Definitions'] ='Definiowanie grupy usług';
+$_LANG['Numbering Plans Group List'] = 'Lista grup usług';
+$_LANG['Group:'] = 'Grupa';
+$_LANG['Add group'] = 'Dodaj grupę';
+
 ?>
