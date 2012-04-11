@@ -9,7 +9,7 @@
 	</TR>
 	{if $listdata.total != 0}
 	<TR CLASS="DARK">
-		<TD COLSPAN="8" CLASS="FALL">
+		<TD COLSPAN="3" CLASS="FALL">
 			{include file="scroller.html" loop=$numberplangrouplist}
 		</TD>
 	</TR>
@@ -30,7 +30,7 @@
 	</TR>
 	{sectionelse}
 	<TR>
-		<TD colspan="8" align="center" class="fall">
+		<TD colspan="3" align="center" class="fall">
 			<p>&nbsp;</p>
 			<p><B>{trans("No such numbering plans group in database.")}</B></p>
 			<p>&nbsp;</p>
@@ -39,7 +39,7 @@
 	{/section}
 	{if $listdata.total != 0}
 	<TR CLASS="DARK">
-		<TD COLSPAN="8" CLASS="FALL">
+		<TD COLSPAN="3" CLASS="FALL">
 			{include file="scroller.html" loop=$numberplangrouplist}
 		</TD>
 	</TR>
