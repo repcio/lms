@@ -37,34 +37,19 @@ function GetNumberPlanGroupList()
 		case 10: case 11: case 12: $startq = 10; break;
 	}
 	
+	/* 
+	 * `numberplansgroups` (id, description)
+	 * `numberplansgroupsassignments` (id, groupid, numberplanid)
+	 * 
+	 * Weź listę grup 
+	 */
 	$yearstart = mktime(0,0,0,1,1);
 	$quarterstart = mktime(0,0,0,$startq,1);
 	$monthstart = mktime(0,0,0,$currmonth,1);
 	$weekstart = mktime(0,0,0,$currmonth,date('j')-strftime('%u')+1);
 	$daystart = mktime(0,0,0);
 
-	if($list = $DB->GetAll('SELECT id, template, period, doctype, isdefault FROM numberplans ORDER BY id'))
-	{
-		$count = $DB->GetAllByKey('SELECT numberplanid AS id, COUNT(numberplanid) AS count
-					    FROM documents 
-					    GROUP BY numberplanid','id');
-
-		$max = $DB->GetAllByKey('SELECT numberplanid AS id, MAX(number) AS max 
-					    FROM documents LEFT JOIN numberplans ON (numberplanid = numberplans.id)
-					    WHERE cdate >= (CASE period
-						WHEN '.YEARLY.' THEN '.$yearstart.'
-						WHEN '.QUARTERLY.' THEN '.$quarterstart.'
-						WHEN '.MONTHLY.' THEN '.$monthstart.'
-						WHEN '.WEEKLY.' THEN '.$weekstart.'
-						WHEN '.DAILY.' THEN '.$daystart.' ELSE 0 END)
-					    GROUP BY numberplanid','id');
-
-		foreach ($list as $idx => $item)
-		{
-			$list[$idx]['next'] = isset($max[$item['id']]['max']) ? $max[$item['id']]['max']+1 : 1;
-			$list[$idx]['issued'] = isset($count[$item['id']]['count']) ? $count[$item['id']]['count'] : 0;
-		}
-	}
+	$list = $DB->GetAll('SELECT id, description FROM numberplansgroups ORDER BY id');
 	
 	return $list;
 }
