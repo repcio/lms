@@ -2588,5 +2588,6 @@ $_LANG['Numbering Plans Group List'] = 'Lista grup usług';
 $_LANG['Group:'] = 'Grupa';
 $_LANG['Add group'] = 'Dodaj grupę';
 $_LANG['Are you sure, you want to delete numberplan group \\\'$a\\\'?'] = 'Jesteś pewien, że chcesz usunąć grupę \\\'$a\\\'?';
-$_LANG['No such numbering plans group in database.'] = 'Brak grup w bazie.'
+$_LANG['No such numbering plans group in database.'] = 'Brak grup w bazie.';
+$_LANG['No numbering plans in this group.'] = 'Brak zdefiniowanych planów numeracyjnych w tej grupie.';
 ?>

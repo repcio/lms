@@ -24,7 +24,7 @@
 			({$numberplangrouplist[numberplangrouplist].id|string_format:"%04d"})
 		</TD>
 		<TD class="fright" align="right" NOWRAP>
-			<A href="?m=numberplangroupdel&id={$numberplangrouplist[numberplangrouplist].id}" OnClick="return confirmLink(this, '{t a=$numberplangrouplist[numberplangrouplist].template}Are you sure, you want to delete numberplan group \'$a\'?{/t}')"><IMG src="img/delete.gif" alt="[ {trans("Delete")} ]" title="[ {trans("Delete")} ]"></A>
+			<A href="?m=numberplangroupdel&id={$numberplangrouplist[numberplangrouplist].id}" OnClick="return confirmLink(this, '{t a=$numberplangrouplist[numberplangrouplist].description}Are you sure, you want to delete numberplan group \'$a\'?{/t}')"><IMG src="img/delete.gif" alt="[ {trans("Delete")} ]" title="[ {trans("Delete")} ]"></A>
 			<A href="?m=numberplangroupedit&id={$numberplangrouplist[numberplangrouplist].id}"><IMG src="img/edit.gif" alt="[ {trans("Edit")} ]" title="[ {trans("Edit")} ]"></A>
 		</TD>
 	</TR>
