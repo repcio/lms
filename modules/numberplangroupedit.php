@@ -50,15 +50,10 @@ function GetNumberPlanGroupContent($id=NULL)
 	$daystart = mktime(0,0,0);
 
 	if($list = $DB->GetAll('SELECT numberplans.id AS id, template, period, doctype FROM numberplans, numberplansgroupsassignments 
-								WHERE numberplansgroupsassignments.groupid=1
+								WHERE numberplansgroupsassignments.groupid=?
 								AND numberplans.id = numberplansgroupsassignments.numberplanid
-								ORDER BY numberplans.id'))
+								ORDER BY numberplans.id',array($id)))
 	{
-		/*
-		$count = $DB->GetAllByKey('SELECT numberplanid AS id, COUNT(numberplanid) AS count
-					    FROM documents 
-					    GROUP BY numberplanid','id');
-		*/
 		$max = $DB->GetAllByKey('SELECT numberplanid AS id, MAX(number) AS max 
 					    FROM documents LEFT JOIN numberplans ON (numberplanid = numberplans.id)
 					    WHERE cdate >= (CASE period
@@ -72,7 +67,6 @@ function GetNumberPlanGroupContent($id=NULL)
 		foreach ($list as $idx => $item)
 		{
 			$list[$idx]['next'] = isset($max[$item['id']]['max']) ? $max[$item['id']]['max']+1 : 1;
-			//$list[$idx]['issued'] = isset($count[$item['id']]['count']) ? $count[$item['id']]['count'] : 0;
 		}
 	}
 	
@@ -88,16 +82,17 @@ $start = ($page - 1) * $pagelimit;
 
 $SESSION->save('nplp', $page);
 
-$layout['pagetitle'] = trans('Numbering Plans Group List');
+$layout['pagetitle'] = trans('Numbering Plan Group \'$a\' Plan List');
 
 $numberplangrouplist = GetNumberPlanGroupContent($_GET['id']);
-$listdata['total'] = sizeof($numberplanlist);
+$listdata['total'] = sizeof($numberplangrouplist);
 
 $SESSION->save('backto', $_SERVER['QUERY_STRING']);
 
 $SMARTY->assign('pagelimit', $pagelimit);
 $SMARTY->assign('page', $page);
 $SMARTY->assign('start', $start);
+$SMARTY->assign('numberplangroup', $_GET['id']);
 $SMARTY->assign('numberplangrouplist', $numberplangrouplist);
 $SMARTY->assign('listdata', $listdata);
 $SMARTY->display('numberplangroupedit.html');

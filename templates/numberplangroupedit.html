@@ -7,11 +7,11 @@
 		<TD width="1%" class="fbt" align="right" NOWRAP>{trans("ID:")}</TD>
 		<TD width="1%" class="fbt" align="right" NOWRAP>{trans("Example (next) number:")}</TD>
 		<TD width="1%" class="fbt" align="right" NOWRAP>{trans("Document type:")}</TD>
-		<TD width="1%" class="frightu" align="right"  NOWRAP><a href="?m=numberplanadd">{trans("Add plan")} <img src="img/save.gif" alt=""></a></TD>
+		<TD width="1%" class="frightu" align="right"  NOWRAP><a href="?m=numberplangroupadd">{trans("Add plan")} <img src="img/save.gif" alt=""></a></TD>
 	</TR>
 	{if $listdata.total != 0}
 	<TR CLASS="DARK">
-		<TD COLSPAN="8" CLASS="FALL">
+		<TD COLSPAN="5" CLASS="FALL">
 			{include file="scroller.html" loop=$numberplangrouplist}
 		</TD>
 	</TR>
@@ -29,20 +29,17 @@
 			{number number=$numberplangrouplist[numberplangrouplist].next template=$numberplangrouplist[numberplangrouplist].template time=$smarty.now}
 		</TD>
 		<TD align="right" NOWRAP onClick="return self.location.href='?m=numberplanedit&id={$numberplangrouplist[numberplangrouplist].id}';">
-			{$numberplangrouplist[numberplangrouplist].issued|default:"0"}
-		</TD>
-		<TD align="right" NOWRAP onClick="return self.location.href='?m=numberplanedit&id={$numberplangrouplist[numberplangrouplist].id}';">
 			{assign var="doctype" value=$numberplangrouplist[numberplangrouplist].doctype}
 			{$_DOCTYPES.$doctype}
 		</TD>
 		<TD class="fright" align="right" NOWRAP>
-			<A href="?m=numberplandel&id={$numberplangrouplist[numberplangrouplist].id}" OnClick="return confirmLink(this, '{t a=$numberplangrouplist[numberplangrouplist].template}Are you sure, you want to delete numberplan \'$a\'?{/t}')"><IMG src="img/delete.gif" alt="[ {trans("Delete")} ]" title="[ {trans("Delete")} ]"></A>
-			<A href="?m=numberplanedit&id={$numberplangrouplist[numberplangrouplist].id}"><IMG src="img/edit.gif" alt="[ {trans("Edit")} ]" title="[ {trans("Edit")} ]"></A>
+			<A href="?m=numberplangroupdel&id={$numberplangrouplist[numberplangrouplist].id}" OnClick="return confirmLink(this, '{t a=$numberplangrouplist[numberplangrouplist].template}Are you sure, you want to delete numberplan \'$a\' from group?{/t}')"><IMG src="img/delete.gif" alt="[ {trans("Delete")} ]" title="[ {trans("Delete")} ]"></A>
+			<A href="?m=numberplangroupedit&id={$numberplangrouplist[numberplangrouplist].id}"><IMG src="img/edit.gif" alt="[ {trans("Edit")} ]" title="[ {trans("Edit")} ]"></A>
 		</TD>
 	</TR>
 	{sectionelse}
 	<TR>
-		<TD colspan="8" align="center" class="fall">
+		<TD colspan="5" align="center" class="fall">
 			<p>&nbsp;</p>
 			<p><B>{trans("No numbering plans in this group.")}</B></p>
 			<p>&nbsp;</p>
@@ -51,14 +48,14 @@
 	{/section}
 	{if $listdata.total != 0}
 	<TR CLASS="DARK">
-		<TD COLSPAN="8" CLASS="FALL">
+		<TD COLSPAN="5" CLASS="FALL">
 			{include file="scroller.html" loop=$numberplangrouplist}
 		</TD>
 	</TR>
 	{/if}
 	<TR class="light">
-		<TD colspan="8" class="fall" align="right">
-			<a href="?m=numberplanadd">{trans("Add plan")} <img src="img/save.gif" alt=""></a>
+		<TD colspan="5" class="fall" align="right">
+			<a href="?m=numberplangroupadd">{trans("Add plan")} <img src="img/save.gif" alt=""></a>
 		</TD>
 	</TR>
 </TABLE></P>
